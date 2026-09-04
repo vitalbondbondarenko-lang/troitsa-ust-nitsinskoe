@@ -7,7 +7,9 @@ import {
   Church,
   CreditCard,
   Landmark,
+  Plus,
   ShieldCheck,
+  Trash2,
   X,
 } from "lucide-react";
 import { SERVICES } from "./siteData.js";
@@ -15,12 +17,15 @@ import { SERVICES } from "./siteData.js";
 export function RequestModal({ open, onClose, initialService = "moleben" }) {
   const [step, setStep] = useState(1);
   const [service, setService] = useState(initialService);
-  const [names, setNames] = useState("");
+  const [commemoration, setCommemoration] = useState(initialService === "pannikhida" ? "repose" : "health");
+  const [names, setNames] = useState([""]);
   const [note, setNote] = useState("");
+  const [contactName, setContactName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [donation, setDonation] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [baptized, setBaptized] = useState(false);
   const [consent, setConsent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const closeButtonRef = useRef(null);
@@ -29,7 +34,16 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
   useEffect(() => {
     if (!open) return undefined;
     setService(initialService);
+    setCommemoration(initialService === "pannikhida" ? "repose" : "health");
     setStep(1);
+    setNames([""]);
+    setNote("");
+    setContactName("");
+    setPhone("");
+    setEmail("");
+    setDonation("");
+    setBaptized(false);
+    setConsent(false);
     setSubmitting(false);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -65,13 +79,36 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
     () => SERVICES.find((item) => item.id === service) || SERVICES[0],
     [service],
   );
+  const availableServices = useMemo(
+    () => SERVICES.filter((item) => commemoration === "health" ? item.id !== "pannikhida" : item.id !== "moleben"),
+    [commemoration],
+  );
+  const filledNames = names.map((name) => name.trim()).filter(Boolean);
 
   if (!open) return null;
 
   const goToPayment = (event) => {
     event.preventDefault();
-    if (!names.trim() || !phone.trim() || !consent) return;
+    if (!filledNames.length || !contactName.trim() || !phone.trim() || !baptized || !consent) return;
     setStep(3);
+  };
+
+  const chooseCommemoration = (value) => {
+    setCommemoration(value);
+    if (value === "repose" && service === "moleben") setService("note");
+    if (value === "health" && service === "pannikhida") setService("note");
+  };
+
+  const updateName = (index, value) => {
+    setNames((current) => current.map((name, nameIndex) => nameIndex === index ? value : name));
+  };
+
+  const addName = () => {
+    setNames((current) => current.length < 12 ? [...current, ""] : current);
+  };
+
+  const removeName = (index) => {
+    setNames((current) => current.length === 1 ? [""] : current.filter((_, nameIndex) => nameIndex !== index));
   };
 
   const finishDemoPayment = () => {
@@ -108,11 +145,15 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
 
         {step === 1 && (
           <div className="modal-step">
-            <p className="eyebrow">Онлайн-просьба</p>
-            <h2 id="request-title">Что вы хотите заказать?</h2>
-            <p className="modal-intro">Выберите вид церковного поминовения. Детали можно уточнить на следующем шаге.</p>
+            <p className="eyebrow">Шаг 1 из 3</p>
+            <h2 id="request-title">Выберите поминовение</h2>
+            <p className="modal-intro">Сначала укажите, за кого подаётся записка, затем выберите доступный вид поминовения.</p>
+            <div className="commemoration-toggle" role="group" aria-label="О здравии или об упокоении">
+              <button type="button" className={commemoration === "health" ? "is-selected" : ""} onClick={() => chooseCommemoration("health")}><strong>О здравии</strong><small>За живых</small></button>
+              <button type="button" className={commemoration === "repose" ? "is-selected" : ""} onClick={() => chooseCommemoration("repose")}><strong>Об упокоении</strong><small>За усопших</small></button>
+            </div>
             <div className="service-picker">
-              {SERVICES.map((item) => (
+              {availableServices.map((item) => (
                 <button
                   key={item.id}
                   type="button"
@@ -130,7 +171,7 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
             <button className="button button--gold button--full" type="button" onClick={() => setStep(2)}>
               Продолжить <ArrowRight size={18} />
             </button>
-            <p className="form-note">Демонстрация интерфейса. Перечень треб и условия должен утвердить приход.</p>
+            <p className="form-note">Разовые поминовения — рабочий вариант для согласования. Сорокоуст и Неусыпаемая Псалтирь в перечень прихода не включены.</p>
           </div>
         )}
 
@@ -139,20 +180,25 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
             <button className="back-link" type="button" onClick={() => setStep(1)}>
               <ArrowLeft size={16} /> Изменить услугу
             </button>
-            <p className="eyebrow">{selectedService.title}</p>
+            <p className="eyebrow">{commemoration === "health" ? "О здравии" : "Об упокоении"} · {selectedService.title}</p>
             <h2 id="request-title">Имена и контакты</h2>
 
-            <label className="field">
-              <span>Имена для поминовения</span>
-              <textarea
-                value={names}
-                onChange={(event) => setNames(event.target.value)}
-                placeholder="Например: Александра, Марии, Николая"
-                rows={3}
-                required
-              />
-              <small>Укажите крещёные имена, каждое с новой строки.</small>
-            </label>
+            <fieldset className="names-fieldset">
+              <legend>Имена для поминовения</legend>
+              <p>Укажите полные имена, данные в Крещении. Не более 12 имён в одной записке.</p>
+              <div className="name-list">
+                {names.map((name, index) => (
+                  <div className="name-row" key={index}>
+                    <span>{index + 1}</span>
+                    <label><span className="sr-only">Имя {index + 1}</span><input value={name} onChange={(event) => updateName(index, event.target.value)} placeholder="Имя в Крещении" required={index === 0} /></label>
+                    <button type="button" onClick={() => removeName(index)} aria-label={`Удалить имя ${index + 1}`}><Trash2 size={16} /></button>
+                  </div>
+                ))}
+              </div>
+              <button className="add-name" type="button" onClick={addName} disabled={names.length >= 12}><Plus size={16} /> Добавить имя <span>{names.length}/12</span></button>
+            </fieldset>
+
+            <details className="name-rules"><summary>Как правильно написать имена</summary><ul><li>Пишите церковные имена полностью, без фамилий и отчеств.</li><li>Священнослужителей указывают первыми, перед именем пишут сан.</li><li>Форма принимает записки за крещёных православных христиан.</li><li>Правило о падеже имён будет окончательно указано после согласования с настоятелем.</li></ul></details>
 
             <label className="field">
               <span>Пожелание или уточнение</span>
@@ -161,9 +207,15 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
 
             <div className="field-row">
               <label className="field">
+                <span>Ваше имя</span>
+                <input value={contactName} onChange={(event) => setContactName(event.target.value)} placeholder="Как к вам обращаться" required />
+              </label>
+              <label className="field">
                 <span>Телефон</span>
                 <input value={phone} onChange={(event) => setPhone(event.target.value)} placeholder="+7 900 000-00-00" required />
               </label>
+            </div>
+            <div className="field-row field-row--single">
               <label className="field">
                 <span>Электронная почта</span>
                 <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="mail@example.ru" />
@@ -181,11 +233,15 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
             </label>
 
             <label className="consent">
+              <input type="checkbox" checked={baptized} onChange={(event) => setBaptized(event.target.checked)} required />
+              <span>Подтверждаю, что указанные имена даны в Крещении</span>
+            </label>
+            <label className="consent">
               <input type="checkbox" checked={consent} onChange={(event) => setConsent(event.target.checked)} required />
               <span>Согласен на обработку данных для передачи просьбы приходу</span>
             </label>
 
-            <button className="button button--gold button--full" type="submit" disabled={!names.trim() || !phone.trim() || !consent}>
+            <button className="button button--gold button--full" type="submit" disabled={!filledNames.length || !contactName.trim() || !phone.trim() || !baptized || !consent}>
               Перейти к оплате <ArrowRight size={18} />
             </button>
           </form>
@@ -200,8 +256,9 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
             <h2 id="request-title">Всё ли верно?</h2>
 
             <div className="order-summary">
+              <div><span>Поминовение</span><strong>{commemoration === "health" ? "О здравии" : "Об упокоении"}</strong></div>
               <div><span>Треба</span><strong>{selectedService.title}</strong></div>
-              <div><span>Имена</span><strong>{names.split("\n").filter(Boolean).length || 1}</strong></div>
+              <div><span>Имена</span><strong>{filledNames.length}</strong></div>
               <div><span>Пожертвование</span><strong>{donation ? `${donation} ₽` : "Без суммы"}</strong></div>
             </div>
 
@@ -230,8 +287,8 @@ export function RequestModal({ open, onClose, initialService = "moleben" }) {
           <div className="modal-step modal-step--success">
             <CheckCircle2 size={58} strokeWidth={1.25} />
             <p className="eyebrow">Демонстрация завершена</p>
-            <h2 id="request-title">Заявка сформирована</h2>
-            <p>В рабочей версии здесь появится подтверждение заказа и электронный чек после подключения эквайринга и реквизитов прихода.</p>
+            <h2 id="request-title">Заявка показана, но не отправлена</h2>
+            <p>В рабочей версии ответственный сотрудник прихода подтвердит получение записки и сообщит о её передаче на ближайшее богослужение. После подключения эквайринга также появится электронный чек.</p>
             <button className="button button--navy button--full" type="button" onClick={onClose}>Вернуться на сайт</button>
           </div>
         )}
