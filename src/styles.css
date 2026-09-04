@@ -698,6 +698,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .schedule-callout h2 { margin: 0; font: 600 43px/1 var(--serif); }
 .schedule-callout > p:not(.eyebrow) { margin: 17px 0 28px; color: rgba(255,255,255,.64); font: 400 17px/1.5 var(--serif); }
 .schedule-page .missing-info { height: 100%; }
+.schedule-special { position: relative; padding: 48px; color: var(--ink); background: #efe6d9; border: 1px solid rgba(193,138,72,.55); }
+.schedule-special .eyebrow { color: #9a672f; }
+.schedule-special h2 { margin: 12px 0 17px; font: 600 43px/1 var(--serif); }
+.schedule-special p:not(.eyebrow) { margin: 0 0 28px; color: var(--muted); font: 400 17px/1.5 var(--serif); }
+.schedule-note { display: flex; align-items: flex-start; gap: 15px; margin-top: -45px; padding: 22px 25px; color: #76542e; background: rgba(255,255,255,.42); border: 1px solid var(--line); }
+.schedule-note > svg { flex: 0 0 auto; color: var(--gold); }
+.schedule-note p { display: flex; flex-direction: column; gap: 5px; margin: 0; }
+.schedule-note strong { font: 600 19px/1 var(--serif); }
+.schedule-note span { color: var(--muted); font-size: 11px; line-height: 1.55; }
 
 .service-catalog { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 40px 0; }
 .service-catalog article { min-height: 285px; display: flex; flex-direction: column; padding: 28px; background: rgba(255,255,255,.45); border: 1px solid var(--line); }
@@ -705,6 +714,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .service-catalog h2 { margin: 25px 0 10px; font: 600 27px/1 var(--serif); }
 .service-catalog p { margin: 0 0 25px; color: var(--muted); font: 400 15px/1.45 var(--serif); }
 .service-catalog .button { margin-top: auto; font-size: 16px; }
+.sacrament-info { display: flex; align-items: center; justify-content: space-between; gap: 45px; margin: 40px 0; padding: 36px 40px; color: #fff; background: var(--navy-soft); border: 1px solid rgba(193,138,72,.45); }
+.sacrament-info > div { max-width: 860px; }
+.sacrament-info h2 { margin: 5px 0 13px; font: 600 34px/1 var(--serif); }
+.sacrament-info p:not(.eyebrow) { margin: 8px 0 0; color: rgba(255,255,255,.67); font: 400 16px/1.5 var(--serif); }
+.sacrament-info .button { flex: 0 0 auto; }
 .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin: 40px 0; color: #fff; background: var(--navy); }
 .process-grid > div { min-height: 155px; padding: 30px; border-right: 1px solid rgba(193,138,72,.3); }
 .process-grid > div:last-child { border-right: 0; }
@@ -718,6 +732,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .guide-grid h2 { margin: 25px 0 12px; font: 600 26px/1 var(--serif); }
 .guide-grid p { color: var(--muted); font: 400 15px/1.45 var(--serif); }
 .center-action { padding-block: 0 85px; text-align: center; }
+.vk-callout { display: flex; align-items: center; justify-content: space-between; gap: 35px; margin-bottom: 35px; padding: 30px 35px; background: rgba(255,255,255,.46); border: 1px solid var(--line); }
+.vk-callout h2 { margin: 4px 0 8px; font: 600 30px/1 var(--serif); }
+.vk-callout p:not(.eyebrow) { margin: 0; color: var(--muted); font: 400 15px/1.5 var(--serif); }
+.vk-callout .source-link { flex: 0 0 auto; margin-top: 0; }
 
 .news-filters { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 35px; }
 .news-filters button { min-height: 38px; padding: 9px 16px; color: #6c5a47; background: transparent; border: 1px solid rgba(193,138,72,.45); cursor: pointer; font-size: 10px; }
@@ -827,6 +845,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .content-layout, .history-page, .schedule-page, .donation-page { grid-template-columns: 1fr; }
   .fact-panel { position: static; }
   .service-catalog, .guide-grid { grid-template-columns: 1fr 1fr; }
+  .sacrament-info { align-items: flex-start; flex-direction: column; }
   .contact-band .section-wrap { grid-template-columns: 1fr auto; gap: 25px; padding-block: 28px; }
   .contact-band .button { grid-column: 1 / -1; }
 }
@@ -887,6 +906,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .shrine-story { grid-template-columns: 1fr; padding: 30px 24px; }
   .shrine-story__mark { width: 78px; height: 78px; }
   .schedule-callout { padding: 36px 25px; }
+  .schedule-special { padding: 36px 25px; }
+  .schedule-callout h2, .schedule-special h2 { font-size: 36px; }
+  .schedule-note { margin-top: -30px; }
+  .sacrament-info, .vk-callout { align-items: stretch; flex-direction: column; padding: 28px 24px; }
+  .vk-callout .source-link { align-self: flex-start; }
   .service-catalog, .guide-grid { grid-template-columns: 1fr; }
   .guide-grid { padding-top: 60px; }
   .project-grid { padding-top: 60px; }
