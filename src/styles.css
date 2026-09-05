@@ -728,7 +728,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 .schedule-special .eyebrow { color: #9a672f; }
 .schedule-special h2 { margin: 12px 0 17px; font: 600 43px/1 var(--serif); }
 .schedule-special p:not(.eyebrow) { margin: 0 0 28px; color: var(--muted); font: 400 17px/1.5 var(--serif); }
-.schedule-note { display: flex; align-items: flex-start; gap: 15px; margin-top: -45px; padding: 22px 25px; color: #76542e; background: rgba(255,255,255,.42); border: 1px solid var(--line); }
+.schedule-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: -45px; }
+.schedule-note { display: flex; align-items: flex-start; gap: 15px; padding: 22px 25px; color: #76542e; background: rgba(255,255,255,.42); border: 1px solid var(--line); }
 .schedule-note > svg { flex: 0 0 auto; color: var(--gold); }
 .schedule-note p { display: flex; flex-direction: column; gap: 5px; margin: 0; }
 .schedule-note strong { font: 600 19px/1 var(--serif); }
@@ -890,6 +891,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .section-header-row { align-items: flex-start; flex-direction: column; gap: 25px; }
   .news-home, .portal-section { padding-block: 70px; }
   .related-links, .architecture-grid, .process-grid, .project-grid { grid-template-columns: 1fr; }
+  .schedule-notes { grid-template-columns: 1fr; }
   .note-guidance { grid-template-columns: 1fr; }
   .architecture-grid > div, .architecture-grid > div:last-child, .process-grid > div { border-right: 1px solid rgba(193,138,72,.35); border-bottom: 0; }
   .rector-profile { grid-template-columns: 280px 1fr; gap: 40px; }
@@ -941,7 +943,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .schedule-callout { padding: 36px 25px; }
   .schedule-special { padding: 36px 25px; }
   .schedule-callout h2, .schedule-special h2 { font-size: 36px; }
-  .schedule-note { margin-top: -30px; }
+  .schedule-notes { margin-top: -30px; }
   .sacrament-info, .vk-callout { align-items: stretch; flex-direction: column; padding: 28px 24px; }
   .vk-callout .source-link { align-self: flex-start; }
   .service-catalog, .guide-grid { grid-template-columns: 1fr; }

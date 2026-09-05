@@ -239,7 +239,7 @@ function SchedulePage() {
   return (
     <><PageHero eyebrow="Богослужения" title="Расписание служб" lead="Постоянное расписание известно. Праздничные изменения публикуются после решения настоятеля." breadcrumbs={[{ label: "Богослужения" }, { label: "Расписание" }]} />
       <section className="schedule-page section-wrap"><div className="schedule-callout ornamental-frame"><CalendarDays size={38} /><p className="eyebrow">Постоянное расписание</p><h2>Каждую субботу · 09:00</h2><p>Божественная литургия. Исповедь совершается во время богослужения, ориентировочно около 11:00. Время может изменяться примерно на 30 минут.</p><a className="button button--gold" href="tel:+79126516432"><Phone size={18} /> Уточнить по телефону</a></div>{showSpecialService ? <div className="schedule-special ornamental-frame"><p className="eyebrow">Ближайшее особое богослужение</p><h2>5 сентября · 08:30</h2><p>Архиерейская Божественная литургия. Богослужение возглавит епископ Алапаевский и Ирбитский Сергий.</p><Link className="text-link" to="/novosti/arkhiereyskaya-liturgiya-5-sentyabrya-2026/">Открыть объявление <ArrowRight size={16} /></Link></div> : <MissingInfo title="Для публикации праздничного расписания" items={PLACEHOLDERS.schedule} />}</section>
-      <section className="section-wrap schedule-note"><Info size={22} /><p><strong>Праздничные службы</strong><span>Расписание зависит от служения отца Фёдора в Усть-Ницинском и Туринске. Обычно изменения становятся известны примерно за неделю. Перед дальней поездкой позвоните в приход.</span></p></section>
+      <section className="section-wrap schedule-notes"><div className="schedule-note"><Users size={22} /><p><strong>Воскресная школа</strong><span>Занятия проходят по субботам с 09:20 до 10:30–11:00. После занятия дети идут в храм на Причастие.</span></p></div><div className="schedule-note"><Info size={22} /><p><strong>Праздничные службы</strong><span>Расписание зависит от служения отца Фёдора в Усть-Ницинском и Туринске. Обычно изменения становятся известны примерно за неделю. Перед дальней поездкой позвоните в приход.</span></p></div></section>
       <section className="section-wrap section-block"><RelatedLinks items={[{ eyebrow: "Онлайн", title: "Подать записку", path: "/treby-online/" }, { eyebrow: "Справка", title: "Таинства и требы", path: "/bogosluzheniya/tainstva-i-treby/" }, { eyebrow: "Поездка", title: "Информация паломникам", path: "/palomnikam/" }]} /></section></>
   );
 }
@@ -276,7 +276,7 @@ function NewsArticlePage({ article }) {
 
 function ParishLifePage() {
   const projects = [
-    [Users, "Воскресная школа", "При храме действует воскресная школа. Расписание, возраст детей и программа занятий ожидают подтверждения.", "Нужны расписание и фотографии"],
+    [Users, "Воскресная школа", "Занятия проходят по субботам с 09:20 до 10:30–11:00. Затем дети идут в храм на Причастие.", "Постоянное расписание подтверждено"],
     [HandHeart, "Адресная помощь", "Приход помогает конкретным людям и семьям. На сайте предусмотрены обращения «Нужна помощь» и «Могу помочь».", "Формы готовятся"],
     [HeartHandshake, "Семья и праздники", "Община проводит рождественские и пасхальные встречи, а также семейный Троицкий фестиваль.", "Нужны даты и фотографии"],
     [Waypoints, "Паломники", "Группы принимаются по предварительной договорённости; экскурсию обычно проводит отец Фёдор.", "Предварительная запись по телефону"],
